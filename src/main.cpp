@@ -3,8 +3,8 @@
 #include <iostream>
 #include <stdint.h>
 
-#include "devices/disp.hpp"
-#include "cpu.hpp"
+#include "devices/disp.h"
+#include "cpu.h"
 
 // stolen: https://codereview.stackexchange.com/questions/22901/reading-all-bytes-from-a-file
 static std::vector<char> ReadAllBytes(char const* filename) {
@@ -25,11 +25,12 @@ static std::vector<char> ReadAllBytes(char const* filename) {
 
 
 int main() {
-    Disp disp;
+    cpu _cpu;
+    Disp disp(&_cpu);
     std::vector<char> f = ReadAllBytes("mocha.bin");
 
     for (int i = 0; i < f.size(); i++) {
-        disp.vram[i] = f[i];
+        _cpu.ram[i] = f[i];
     }
 
     if (disp.Construct(255,144,4,4)) disp.Start();

@@ -1,4 +1,5 @@
-#include "disp.hpp"
+#include "disp.h"
+#include "keyboard.h"
 
 std::array<uint8_t, 3> Disp::byteToRGB(uint8_t color) {
     std::array<uint8_t, 3> rgb{color, color, color};
@@ -22,11 +23,28 @@ bool Disp::OnUserUpdate(float fElapsedTime) {
 
     for (int y = 0; y < 144; y++) {
         for (int x = 0; x < 255; x++) {
-            std::array<uint8_t, 3> rgb = byteToRGB(vram[idx]);
+            std::array<uint8_t, 3> rgb = byteToRGB(_cpu->ram[idx]);
             DispDraw(rgb[0], rgb[1], rgb[2], x, y);
             idx++;
         }
     }
+
+    for (auto& m : valueInputKeys)
+    {
+        if (GetKey(m.key).bPressed)
+        {
+            _cpu->interrupt(0x16, 0);
+            _cpu->interrupt(0x16, (byte) m.key);
+        }
+
+        if (GetKey(m.key).bReleased)
+        {
+            _cpu->interrupt(0x16, 1);
+            _cpu->interrupt(0x16, (byte) m.key);
+        }
+    }
+        
+
     return true;
 }
 

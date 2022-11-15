@@ -6,14 +6,16 @@
 #include <thread>
 
 #include "olcPixelGameEngine.h"
+#include "cpu.h"
 // #include "font.h"
 
 class Disp : public olc::PixelGameEngine {
 public:
-    std::array<uint8_t, 0xffff> vram;
+    cpu* _cpu;
 
-    Disp() {
+    Disp(cpu* _cpu) {
         sAppName = "Mocha";
+        this->_cpu = _cpu;
     }
 public:
     bool OnUserCreate() override;
