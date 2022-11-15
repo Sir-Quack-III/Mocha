@@ -10,10 +10,20 @@ BIN = bin
 INC_DIR_SRC = -Isrc
 INC_DIR_LIB =
 
-DEBUGFLAGS = $(INC_DIR_SRC) $(INC_DIR_LIB) -Wall -g -lX11 -lGL -lpthread -lpng -lstdc++fs -std=c++17
-RELEASEFLAGS = $(INC_DIR_SRC) $(INC_DIR_LIB) -O3 -lX11 -lGL -lpthread -lpng -lstdc++fs -std=c++17
+DEBUGFLAGS = $(INC_DIR_SRC) $(INC_DIR_LIB) -Wall -g 
+RELEASEFLAGS = $(INC_DIR_SRC) $(INC_DIR_LIB) -O3
 ASMFLAGS = $(INC_DIR_SRC) $(INC_DIR_LIBS) -Wall
-LDFLAGS = $(LIBS) -lm -lX11 -lGL -lpthread -lpng -lstdc++fs -std=c++17
+LDFLAGS = $(LIBS) -lm -lpthread -lpng 
+OSXLD = -lobjc -std=c++2b -framework OpenGL -framework GLUT 
+LINUXLD = -lstdc++fs -std=c++17 -lX11 -lGL
+
+UNAME_S := $(shell uname -s)
+    ifeq ($(UNAME_S),Linux)
+        LDFLAGS += $(LINUXLD)
+    endif
+    ifeq ($(UNAME_S),Darwin)
+        LDFLAGS += $(OSXLD)
+    endif
 
 .PHONY: all libs clean
 
