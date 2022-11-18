@@ -3,7 +3,7 @@ from PIL import Image
 img = Image.open("bean.png")
 pixels = img.load()
 
-of = open("mocha.bin", "wb")
+of = open("img.bin", "wb")
 
 print(type(pixels[0,0]))
 
